@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodie_hub/models/local_restaurant.dart';
 import 'package:foodie_hub/utils/style_manager.dart';
 
 class HomePage extends StatelessWidget {
@@ -44,16 +45,79 @@ class HomePage extends StatelessWidget {
         future: DefaultAssetBundle.of(context)
             .loadString('assets/local_restaurant.json'),
         builder: (context, snapshot) {
+          final localRestaurant =
+              localRestaurantFromJson(snapshot.data.toString());
           return ListView.builder(
               shrinkWrap: true,
-              itemCount: 100,
+              itemCount: localRestaurant.restaurants.length,
               itemBuilder: (context, index) {
-                return Container(
-                  margin: EdgeInsets.only(bottom: 12),
-                  height: 100,
-                  color: Colors.red,
-                );
+                return _buildRestaurantItem(
+                    context, localRestaurant.restaurants[index]);
               });
         });
+  }
+
+  Widget _buildRestaurantItem(BuildContext context, Restaurant restaurant) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: const Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
+            child: Hero(
+              tag: restaurant.pictureId,
+              child: Image.network(
+                restaurant.pictureId,
+                height: 150,
+                width: 145,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  restaurant.name,
+                  style: getBlackTextStyle(),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  restaurant.description,
+                  style: getBlackTextStyle(fontSize: 12),
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Row(
+                  children: [
+                    const Icon(Icons.star, color: Colors.yellow),
+                    Text(
+                      restaurant.rating.toString(),
+                      style: getBlackTextStyle(fontSize: 12),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
