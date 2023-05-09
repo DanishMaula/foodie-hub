@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodie_hub/presentation/detail_page.dart';
 import 'package:foodie_hub/presentation/home_page.dart';
+import 'package:foodie_hub/presentation/splash_page.dart';
 
 import 'models/local_restaurant.dart';
 
@@ -17,9 +18,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(scaffoldBackgroundColor: Colors.white),
-      initialRoute: HomePage.routeName,
+      initialRoute: SplashPage.routeName,
       routes: {
         HomePage.routeName: (context) => const HomePage(),
+        SplashPage.routeName: (context) => const SplashPage(),
         DetailPage.routeName: (context) => DetailPage(
               restaurantModel:
                   ModalRoute.of(context)?.settings.arguments as Restaurant,

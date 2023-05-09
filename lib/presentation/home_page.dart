@@ -19,10 +19,13 @@ class HomePage extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Welcome to Foodie Hub',
-                    style: getBlackTextStyle(
-                        fontSize: 24, fontWeight: FontWeight.w600),
+                  Hero(
+                    tag: 'foodie',
+                    child: Text(
+                      'Welcome to Foodie Hub',
+                      style: getBlackTextStyle(
+                          fontSize: 24, fontWeight: FontWeight.w600),
+                    ),
                   ),
                   Text(
                     'Your one stop for all your food needs.',
@@ -46,16 +49,20 @@ class HomePage extends StatelessWidget {
         future: DefaultAssetBundle.of(context)
             .loadString('assets/local_restaurant.json'),
         builder: (context, snapshot) {
-          final localRestaurant =
-              localRestaurantFromJson(snapshot.data.toString());
-          return ListView.builder(
-              physics: BouncingScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: localRestaurant.restaurants.length,
-              itemBuilder: (context, index) {
-                return _buildRestaurantItem(
-                    context, localRestaurant.restaurants[index]);
-              });
+          if (snapshot.data == null) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            final localRestaurant =
+                localRestaurantFromJson(snapshot.data.toString());
+            return ListView.builder(
+                physics: BouncingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: localRestaurant.restaurants.length,
+                itemBuilder: (context, index) {
+                  return _buildRestaurantItem(
+                      context, localRestaurant.restaurants[index]);
+                });
+          }
         });
   }
 
