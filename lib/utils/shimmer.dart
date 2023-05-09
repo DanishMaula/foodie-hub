@@ -6,19 +6,26 @@ class ShimmerContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey.withOpacity(0.3),
-      highlightColor: Colors.grey.withOpacity(0.1),
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        margin: const EdgeInsets.symmetric(vertical: 5),
-        height: 45,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.grey,
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: 10,
+      itemBuilder: (BuildContext context, int index) {
+        return Shimmer.fromColors(
+          baseColor: Colors.grey.withOpacity(0.3),
+          highlightColor: Colors.grey.withOpacity(0.1),
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            height: 45,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        );
+      },
     );
   }
 }
