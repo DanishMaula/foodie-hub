@@ -23,12 +23,9 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
-      child: Hero(
-        tag: 'foodie',
-        child: Text(
-          'Foodie Hub',
-          style: getBlackTextStyle(fontSize: 24),
-        ),
+      child: Text(
+        'Foodie Hub',
+        style: getBlackTextStyle(fontSize: 24),
       ),
     ));
   }

@@ -21,13 +21,10 @@ class HomePage extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Hero(
-                    tag: 'foodie',
-                    child: Text(
-                      'Welcome to Foodie Hub',
-                      style: getBlackTextStyle(
-                          fontSize: 24, fontWeight: FontWeight.w600),
-                    ),
+                  Text(
+                    'Welcome to Foodie Hub',
+                    style: getBlackTextStyle(
+                        fontSize: 24, fontWeight: FontWeight.w600),
                   ),
                   Text(
                     'Your one stop for all your food needs.',
@@ -54,7 +51,8 @@ class HomePage extends StatelessWidget {
         if (snapshot.data == null) {
           return const ShimmerContainer();
         } else {
-          final localRestaurant = localRestaurantFromJson(snapshot.data.toString());
+          final localRestaurant =
+              localRestaurantFromJson(snapshot.data.toString());
           return ListView.builder(
             physics: const BouncingScrollPhysics(),
             shrinkWrap: true,
