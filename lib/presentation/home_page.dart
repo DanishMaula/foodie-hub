@@ -49,6 +49,7 @@ class HomePage extends StatelessWidget {
           final localRestaurant =
               localRestaurantFromJson(snapshot.data.toString());
           return ListView.builder(
+              physics: BouncingScrollPhysics(),
               shrinkWrap: true,
               itemCount: localRestaurant.restaurants.length,
               itemBuilder: (context, index) {
