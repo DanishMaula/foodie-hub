@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:foodie_hub/presentation/detail_page.dart';
 import 'package:foodie_hub/presentation/home_page.dart';
+
+import 'models/local_restaurant.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,12 +16,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        
-        scaffoldBackgroundColor: Colors.white),
-      home: const HomePage(),
+      theme: ThemeData(scaffoldBackgroundColor: Colors.white),
+      initialRoute: HomePage.routeName,
       routes: {
         HomePage.routeName: (context) => const HomePage(),
+        DetailPage.routeName: (context) => DetailPage(
+              restaurantModel:
+                  ModalRoute.of(context)?.settings.arguments as Restaurant,
+            ),
       },
     );
   }

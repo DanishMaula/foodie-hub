@@ -4,6 +4,7 @@ import 'package:foodie_hub/utils/style_manager.dart';
 
 class HomePage extends StatelessWidget {
   static const String routeName = '/home-page';
+
   const HomePage({super.key});
 
   @override
@@ -61,7 +62,9 @@ class HomePage extends StatelessWidget {
     return Column(
       children: [
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, '/detail-page', arguments: restaurant);
+          },
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

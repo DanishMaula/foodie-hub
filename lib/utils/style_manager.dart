@@ -19,3 +19,11 @@ TextStyle getBlackTextStyle({
 }) {
   return _getTextStyle(fontSize, fontWeight, Colors.black);
 }
+
+TextStyle getWhiteTextStyle({
+  double fontSize = 16,
+  FontWeight fontWeight = FontWeight.w500,
+}) {
+  return _getTextStyle(
+      fontSize, fontWeight, Colors.white);
+}
