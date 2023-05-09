@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:foodie_hub/models/local_restaurant.dart';
 import 'package:foodie_hub/utils/style_manager.dart';
 
+import '../utils/shimmer.dart';
+
 class HomePage extends StatelessWidget {
   static const String routeName = '/home-page';
 
@@ -46,24 +48,25 @@ class HomePage extends StatelessWidget {
 
   FutureBuilder<String> _buildList(BuildContext context) {
     return FutureBuilder(
-        future: DefaultAssetBundle.of(context)
-            .loadString('assets/local_restaurant.json'),
-        builder: (context, snapshot) {
-          if (snapshot.data == null) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            final localRestaurant =
-                localRestaurantFromJson(snapshot.data.toString());
-            return ListView.builder(
-                physics: BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: localRestaurant.restaurants.length,
-                itemBuilder: (context, index) {
-                  return _buildRestaurantItem(
-                      context, localRestaurant.restaurants[index]);
-                });
-          }
-        });
+      future: DefaultAssetBundle.of(context)
+          .loadString('assets/local_restaurant.json'),
+      builder: (context, snapshot) {
+        if (snapshot.data == null) {
+          return const ShimmerContainer();
+        } else {
+          final localRestaurant = localRestaurantFromJson(snapshot.data.toString());
+          return ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: localRestaurant.restaurants.length,
+            itemBuilder: (context, index) {
+              return _buildRestaurantItem(
+                  context, localRestaurant.restaurants[index]);
+            },
+          );
+        }
+      },
+    );
   }
 
   Widget _buildRestaurantItem(BuildContext context, Restaurant restaurant) {
