@@ -39,5 +39,4 @@ class RestaurantProvider extends ChangeNotifier {
       return _message = 'Error --> $e';
     }
   }
-
 }

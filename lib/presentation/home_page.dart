@@ -51,6 +51,7 @@ class HomePage extends StatelessWidget {
         return const Center(child: ShimmerContainer());
       } else if (state.state == ResultState.HasData) {
         return ListView.builder(
+          physics: const BouncingScrollPhysics(),
             shrinkWrap: true,
             itemCount: state.result.restaurants.length,
             itemBuilder: (context, index) {
