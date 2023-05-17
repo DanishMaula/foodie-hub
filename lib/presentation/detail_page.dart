@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodie_hub/models/local_restaurant.dart';
+import 'package:foodie_hub/data/models/local_restaurant.dart';
 
 import '../utils/style_manager.dart';
 

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:foodie_hub/models/local_restaurant.dart';
+import 'package:foodie_hub/data/models/local_restaurant.dart';
+import 'package:foodie_hub/provider/restaurant_provider.dart';
 import 'package:foodie_hub/utils/style_manager.dart';
+import 'package:foodie_hub/widgets/card_restaurant.dart';
+import 'package:provider/provider.dart';
 
 import '../utils/shimmer.dart';
 
@@ -43,110 +46,33 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  FutureBuilder<String> _buildList(BuildContext context) {
-    return FutureBuilder(
-      future: DefaultAssetBundle.of(context)
-          .loadString('assets/local_restaurant.json'),
-      builder: (context, snapshot) {
-        if (snapshot.data == null) {
-          return const ShimmerContainer();
-        } else {
-          final localRestaurant =
-              localRestaurantFromJson(snapshot.data.toString());
-          return ListView.builder(
-            physics: const BouncingScrollPhysics(),
+  Widget _buildList(BuildContext context) {
+    return Consumer<RestaurantProvider>(builder: (context, state, _) {
+      if (state.state == ResultState.Loading) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (state.state == ResultState.HasData) {
+        return ListView.builder(
             shrinkWrap: true,
-            itemCount: localRestaurant.restaurants.length,
+            itemCount: state.result.restaurants.length,
             itemBuilder: (context, index) {
-              return _buildRestaurantItem(
-                  context, localRestaurant.restaurants[index]);
-            },
-          );
-        }
-      },
-    );
-  }
-
-  Widget _buildRestaurantItem(BuildContext context, Restaurant restaurant) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(context, '/detail-page', arguments: restaurant);
-          },
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset:
-                            const Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: Hero(
-                    tag: restaurant.pictureId,
-                    child: Image.network(
-                      restaurant.pictureId,
-                      height: 150,
-                      width: 145,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        restaurant.name,
-                        style: getBlackTextStyle(fontWeight: FontWeight.w600),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        restaurant.description,
-                        style: getBlackTextStyle(
-                            fontSize: 13, fontWeight: FontWeight.w500),
-                        maxLines: 4,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: <Widget>[
-                          const Icon(
-                            Icons.location_on,
-                            color: Colors.grey,
-                            size: 17,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            restaurant.city,
-                            style: getBlackTextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+              var restaurant = state.result.restaurants[index];
+              return CardRestaurant(restaurant: restaurant);
+            });
+      } else if (state.state == ResultState.NoData) {
+        return Center(
+          child: Material(
+            child: Text(state.message),
           ),
-        ),
-        const SizedBox(height: 14),
-      ],
-    );
+        );
+      } else if (state.state == ResultState.Error) {
+        return Center(
+          child: Material(
+            child: Text(state.message),
+          ),
+        );
+      } else {
+        return const Center(child: Text(''));
+      }
+    });
   }
 }
