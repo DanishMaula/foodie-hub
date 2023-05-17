@@ -17,7 +17,7 @@ class ShimmerContainer extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(10),
             margin: const EdgeInsets.symmetric(vertical: 5),
-            height: 45,
+            height: 100,
             width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.grey,

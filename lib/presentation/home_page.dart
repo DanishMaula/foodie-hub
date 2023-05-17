@@ -49,7 +49,7 @@ class HomePage extends StatelessWidget {
   Widget _buildList(BuildContext context) {
     return Consumer<RestaurantProvider>(builder: (context, state, _) {
       if (state.state == ResultState.Loading) {
-        return const Center(child: CircularProgressIndicator());
+        return const Center(child: ShimmerContainer());
       } else if (state.state == ResultState.HasData) {
         return ListView.builder(
             shrinkWrap: true,
