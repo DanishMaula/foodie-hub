@@ -16,4 +16,13 @@ class ApiService {
       throw Exception('Failed to load restaurant');
     }
   }
+
+  Future<RestaurantElement> getRestaurantById(String id) async {
+    final response = await http.get(Uri.parse('$_baseUrl/detail/$id'));
+    if (response.statusCode == 200) {
+      return RestaurantElement.fromJson(jsonDecode(response.body)['restaurant']);
+    } else {
+      throw Exception('Failed to load restaurant');
+    }
+  }
 }

@@ -6,8 +6,7 @@ import 'package:foodie_hub/provider/restaurant_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'data/api/api_service.dart';
-import 'data/models/local_restaurant.dart';
-
+import 'data/models/restaurant_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,10 +27,10 @@ class MyApp extends StatelessWidget {
         routes: {
           HomePage.routeName: (context) => const HomePage(),
           SplashPage.routeName: (context) => const SplashPage(),
-          DetailPage.routeName: (context) => DetailPage(
-                restaurantModel:
-                    ModalRoute.of(context)?.settings.arguments as Restaurant,
-              ),
+          //   DetailPage.routeName: (context) => DetailPage(
+          //         restaurantModel:
+          //             ModalRoute.of(context)?.settings.arguments as RestaurantElement,
+          //       ),
         },
       ),
     );

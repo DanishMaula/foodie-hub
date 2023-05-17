@@ -14,12 +14,13 @@ class CardRestaurant extends StatelessWidget {
     return Column(
       children: [
         GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(
-              context,
-              '/detail-page',
-            );
-          },
+          // onTap: () {
+          //   Navigator.pushNamed(
+          //     context,
+          //     '/detail-page',
+          //     arguments: restaurant
+          //   );
+          // },
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -39,7 +40,17 @@ class CardRestaurant extends StatelessWidget {
                   ),
                   child: Hero(
                     tag: restaurant.pictureId,
-                    child: Image.network(
+                    child:
+
+                        // FadeInImage(
+                        //   image: NetworkImage(ApiService.imgUrl + restaurant.pictureId),
+                        //   placeholder:  const AssetImage('assets/images/food.png'),
+                        //   height: 150,
+                        //   width: 145,
+                        //   fit: BoxFit.cover,
+                        // )
+
+                        Image.network(
                       ApiService.imgUrl + restaurant.pictureId,
                       height: 150,
                       width: 145,

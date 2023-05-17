@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:foodie_hub/data/models/local_restaurant.dart';
 import 'package:foodie_hub/provider/restaurant_provider.dart';
 import 'package:foodie_hub/utils/style_manager.dart';
 import 'package:foodie_hub/widgets/card_restaurant.dart';
