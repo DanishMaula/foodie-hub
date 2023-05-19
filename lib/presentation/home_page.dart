@@ -46,32 +46,37 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildList(BuildContext context) {
-    return Consumer<RestaurantProvider>(builder: (context, state, _) {
-      if (state.state == ResultState.Loading) {
-        return const Center(child: ShimmerContainer());
-      } else if (state.state == ResultState.HasData) {
-        return ListView.builder(
+    return Consumer<RestaurantProvider>(
+      builder: (context, state, _) {
+        if (state.state == ResultState.Loading) {
+          return const Center(child: ShimmerContainer());
+        } else if (state.state == ResultState.HasData) {
+          return ListView.builder(
             shrinkWrap: true,
             itemCount: state.result.restaurants.length,
             itemBuilder: (context, index) {
               var restaurant = state.result.restaurants[index];
-              return CardRestaurant(restaurant: restaurant);
-            });
-      } else if (state.state == ResultState.NoData) {
-        return Center(
-          child: Material(
-            child: Text(state.message),
-          ),
-        );
-      } else if (state.state == ResultState.Error) {
-        return Center(
-          child: Material(
-            child: Text(state.message),
-          ),
-        );
-      } else {
-        return const Center(child: Text(''));
-      }
-    });
+              return CardRestaurant(
+                restaurant: restaurant,
+              );
+            },
+          );
+        } else if (state.state == ResultState.NoData) {
+          return Center(
+            child: Material(
+              child: Text(state.message),
+            ),
+          );
+        } else if (state.state == ResultState.Error) {
+          return Center(
+            child: Material(
+              child: Text(state.message),
+            ),
+          );
+        } else {
+          return const Center(child: Text(''));
+        }
+      },
+    );
   }
 }

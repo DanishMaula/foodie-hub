@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:foodie_hub/data/api/api_service.dart';
+import 'package:foodie_hub/data/models/restaurant_model.dart';
 
-import '../data/models/restaurant_model.dart';
+import '../data/models/restaurant_detail_model.dart';
 import '../utils/style_manager.dart';
 
 class CardRestaurant extends StatelessWidget {
@@ -14,13 +15,13 @@ class CardRestaurant extends StatelessWidget {
     return Column(
       children: [
         GestureDetector(
-          // onTap: () {
-          //   Navigator.pushNamed(
-          //     context,
-          //     '/detail-page',
-          //     arguments: restaurant
-          //   );
-          // },
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              '/detail-page',
+              arguments: restaurant,
+            );
+          },
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

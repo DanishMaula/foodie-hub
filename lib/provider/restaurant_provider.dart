@@ -11,12 +11,12 @@ class RestaurantProvider extends ChangeNotifier {
     fetchRestaurant();
   }
 
-  late Restaurant _restaurant;
+  late RestaurantModel _restaurant;
   late ResultState _state;
   String _message = '';
 
   String get message => _message;
-  Restaurant get result => _restaurant;
+  RestaurantModel get result => _restaurant;
   ResultState get state => _state;
 
   Future<dynamic> fetchRestaurant() async {
@@ -39,5 +39,6 @@ class RestaurantProvider extends ChangeNotifier {
       return _message = 'Error --> $e';
     }
   }
+
 
 }

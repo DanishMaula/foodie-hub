@@ -4,24 +4,24 @@
 
 import 'dart:convert';
 
-Restaurant restaurantFromJson(String str) => Restaurant.fromJson(json.decode(str));
+RestaurantModel restaurantFromJson(String str) => RestaurantModel.fromJson(json.decode(str));
 
-String restaurantToJson(Restaurant data) => json.encode(data.toJson());
+String restaurantToJson(RestaurantModel data) => json.encode(data.toJson());
 
-class Restaurant {
+class RestaurantModel {
     final bool error;
     final String message;
     final int count;
     final List<RestaurantElement> restaurants;
 
-    Restaurant({
+    RestaurantModel({
         required this.error,
         required this.message,
         required this.count,
         required this.restaurants,
     });
 
-    factory Restaurant.fromJson(Map<String, dynamic> json) => Restaurant(
+    factory RestaurantModel.fromJson(Map<String, dynamic> json) => RestaurantModel(
         error: json["error"],
         message: json["message"],
         count: json["count"],
