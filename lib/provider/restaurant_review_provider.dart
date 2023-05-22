@@ -10,7 +10,9 @@ enum ResultStateCustomer { Loading, NoData, HasData, Error }
 class RestaurantReviewProvider extends ChangeNotifier {
   final ApiService apiService;
 
-  RestaurantReviewProvider({required this.apiService});
+  RestaurantReviewProvider({required this.apiService}){
+    resetState();
+  }
 
   late CustomerReviewModel _restaurantCustomerReview;
   ResultStateCustomer? _state;
@@ -20,10 +22,13 @@ class RestaurantReviewProvider extends ChangeNotifier {
 
   CustomerReviewModel get result => _restaurantCustomerReview;
 
-
-
   ResultStateCustomer? get state => _state;
 
+
+  void resetState(){
+    _state = null;
+    notifyListeners();
+  }
 
   Future<dynamic> postReviewRestaurant(
       String id, String name, String review) async {

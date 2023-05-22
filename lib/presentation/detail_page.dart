@@ -16,18 +16,21 @@ class DetailPage extends StatelessWidget {
   DetailPage({super.key, required this.restaurant});
 
   TextEditingController reviewController = TextEditingController();
+
   TextEditingController nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     // final detailProvider =
     //     Provider.of<RestaurantDetailProvider>(context, listen: false);
-    // // final reviewProvider = Provider.of<RestaurantReviewProvider>(context, listen: false);
+    final reviewProvider = Provider.of<RestaurantReviewProvider>(context, listen: false);
+
     //
-    // WidgetsBinding.instance?.addPostFrameCallback((_) {
-    //   detailProvider.fetchDetailRestaurant(id.toString());
-    //   // reviewProvider.postReviewRestaurant('','','');
-    // });
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      // detailProvider.fetchDetailRestaurant(id.toString());
+      // reviewProvider.postReviewRestaurant('','','');
+      reviewProvider.resetState();
+    });
 
     return ChangeNotifierProvider(
       create: (context) => RestaurantDetailProvider(
@@ -215,6 +218,7 @@ class DetailPage extends StatelessWidget {
   Consumer _buildCustomerReview(List<CustomerReview> list) {
     return Consumer<RestaurantReviewProvider>(
       builder: (context, state, _) {
+        print(state.state);
         if (state.state == ResultStateCustomer.Loading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state.state == ResultStateCustomer.HasData) {
@@ -223,9 +227,9 @@ class DetailPage extends StatelessWidget {
           return Text(state.message);
         } else if (state.state == ResultStateCustomer.Error) {
           return Text(state.message);
-        } else if (state.state == null){
+        } else if (state.state == null) {
           return _buildListCustomerReview(list);
-        }else{
+        } else {
           return Text(state.message);
         }
       },
