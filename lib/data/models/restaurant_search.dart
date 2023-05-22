@@ -1,42 +1,38 @@
 // To parse this JSON data, do
 //
-//     final restaurant = restaurantFromJson(jsonString);
+//     final restaurantSearch = restaurantSearchFromJson(jsonString);
 
 import 'dart:convert';
 
-Restaurants restaurantFromJson(String str) => Restaurants.fromJson(json.decode(str));
+RestaurantSearch restaurantSearchFromJson(String str) => RestaurantSearch.fromJson(json.decode(str));
 
-String restaurantToJson(Restaurants data) => json.encode(data.toJson());
+String restaurantSearchToJson(RestaurantSearch data) => json.encode(data.toJson());
 
-class Restaurants {
+class RestaurantSearch {
     final bool error;
-    final String message;
-    final int count;
-    final List<RestaurantElement> restaurants;
+    final int founded;
+    final List<Restaurantt> restaurants;
 
-    Restaurants({
+    RestaurantSearch({
         required this.error,
-        required this.message,
-        required this.count,
+        required this.founded,
         required this.restaurants,
     });
 
-    factory Restaurants.fromJson(Map<String, dynamic> json) => Restaurants(
+    factory RestaurantSearch.fromJson(Map<String, dynamic> json) => RestaurantSearch(
         error: json["error"],
-        message: json["message"],
-        count: json["count"],
-        restaurants: List<RestaurantElement>.from(json["restaurants"].map((x) => RestaurantElement.fromJson(x))),
+        founded: json["founded"],
+        restaurants: List<Restaurantt>.from(json["restaurants"].map((x) => Restaurantt.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
         "error": error,
-        "message": message,
-        "count": count,
+        "founded": founded,
         "restaurants": List<dynamic>.from(restaurants.map((x) => x.toJson())),
     };
 }
 
-class RestaurantElement {
+class Restaurantt {
     final String id;
     final String name;
     final String description;
@@ -44,7 +40,7 @@ class RestaurantElement {
     final String city;
     final double rating;
 
-    RestaurantElement({
+    Restaurantt({
         required this.id,
         required this.name,
         required this.description,
@@ -53,7 +49,7 @@ class RestaurantElement {
         required this.rating,
     });
 
-    factory RestaurantElement.fromJson(Map<String, dynamic> json) => RestaurantElement(
+    factory Restaurantt.fromJson(Map<String, dynamic> json) => Restaurantt(
         id: json["id"],
         name: json["name"],
         description: json["description"],

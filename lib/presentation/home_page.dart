@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:foodie_hub/presentation/search_restaurant.dart';
 import 'package:foodie_hub/provider/restaurant_provider.dart';
 import 'package:foodie_hub/utils/style_manager.dart';
-import 'package:foodie_hub/widgets/card_restaurant.dart';
+import 'package:foodie_hub/widgets/search_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/shimmer.dart';
+import '../widgets/card_restaurant.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static const String routeName = '/home-page';
 
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,18 +27,32 @@ class HomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  Text(
-                    'Welcome to Foodie Hub',
-                    style: getBlackTextStyle(
-                        fontSize: 24, fontWeight: FontWeight.w600),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Welcome to Foodie Hub',
+                        style: getBlackTextStyle(
+                            fontSize: 24, fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        'Your one stop for all your food needs.',
+                        style: getBlackTextStyle(),
+                      ),
+                    ],
                   ),
-                  Text(
-                    'Your one stop for all your food needs.',
-                    style: getBlackTextStyle(),
-                  ),
+                  const Spacer(),
+                  IconButton.outlined(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, SearchRestaurant.routeName);
+                      },
+                      icon: const Icon(
+                        Icons.search,
+                        color: Colors.black,
+                      ))
                 ],
               ),
               const SizedBox(height: 24),
@@ -51,7 +72,7 @@ class HomePage extends StatelessWidget {
         return const Center(child: ShimmerContainer());
       } else if (state.state == ResultState.HasData) {
         return ListView.builder(
-          physics: const BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             shrinkWrap: true,
             itemCount: state.result.restaurants.length,
             itemBuilder: (context, index) {

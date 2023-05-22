@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:foodie_hub/data/api/api_service.dart';
+import 'package:foodie_hub/data/models/restaurant_search.dart';
 
-import '../data/models/restaurant_model.dart';
 import '../utils/style_manager.dart';
 
-class CardRestaurant extends StatelessWidget {
-  final RestaurantElement restaurant;
+class CardSearchRestaurant extends StatelessWidget {
+  final Restaurantt restaurant;
 
-  const CardRestaurant({super.key, required this.restaurant});
+  const CardSearchRestaurant({super.key, required this.restaurant});
 
   @override
   Widget build(BuildContext context) {
