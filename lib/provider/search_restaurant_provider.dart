@@ -3,7 +3,6 @@ import 'package:foodie_hub/data/api/api_service.dart';
 import 'package:foodie_hub/data/models/restaurant_search.dart';
 import 'package:foodie_hub/provider/restaurant_provider.dart';
 
-import '../data/models/restaurant_detail_model.dart';
 
 class SearchRestaurantProvider extends ChangeNotifier {
   final ApiService apiService;

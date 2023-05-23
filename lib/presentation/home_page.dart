@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:foodie_hub/presentation/search_restaurant.dart';
 import 'package:foodie_hub/provider/restaurant_provider.dart';
 import 'package:foodie_hub/utils/style_manager.dart';
-import 'package:foodie_hub/widgets/search_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/shimmer.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:foodie_hub/data/api/api_service.dart';
 import 'package:foodie_hub/data/models/restaurant_model.dart';
+import 'package:foodie_hub/presentation/detail_page.dart';
 
-import '../data/models/restaurant_detail_model.dart';
 import '../utils/style_manager.dart';
 
 class CardRestaurant extends StatelessWidget {
@@ -18,7 +18,7 @@ class CardRestaurant extends StatelessWidget {
           onTap: () {
             Navigator.pushNamed(
               context,
-              '/detail-page',
+              DetailPage.routeName,
               arguments: restaurant,
             );
           },
@@ -43,7 +43,8 @@ class CardRestaurant extends StatelessWidget {
                       tag: restaurant.pictureId,
                       child: FadeInImage(
                         image: NetworkImage(
-                            ApiService.imgUrl + restaurant.pictureId),
+                            ApiService.imgUrl + restaurant.pictureId
+                            ),
                         placeholder: const AssetImage('assets/images/grey.png'),
                         height: 150,
                         width: 145,

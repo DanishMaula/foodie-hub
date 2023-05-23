@@ -4,15 +4,12 @@ import 'package:foodie_hub/presentation/detail_page.dart';
 import 'package:foodie_hub/presentation/home_page.dart';
 import 'package:foodie_hub/presentation/search_restaurant.dart';
 import 'package:foodie_hub/presentation/splash_page.dart';
-import 'package:foodie_hub/provider/restaurant_detail_provider.dart';
 import 'package:foodie_hub/provider/restaurant_provider.dart';
 import 'package:foodie_hub/provider/restaurant_review_provider.dart';
 import 'package:foodie_hub/provider/search_restaurant_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'data/api/api_service.dart';
-import 'data/models/restaurant_detail_model.dart' as restaurant;
-import 'data/models/restaurant_detail_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +18,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -29,10 +25,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<RestaurantProvider>(
           create: (context) => RestaurantProvider(apiService: ApiService()),
         ),
-        // ChangeNotifierProvider<RestaurantDetailProvider>(
-        //   create: (context) =>
-        //       RestaurantDetailProvider(apiService: ApiService(), restaurant: null),
-        // ),
         ChangeNotifierProvider<RestaurantReviewProvider>(
           create: (context) =>
               RestaurantReviewProvider(apiService: ApiService()),

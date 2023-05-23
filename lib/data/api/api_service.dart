@@ -40,15 +40,12 @@ class ApiService {
   ) async {
     final body = json.encode({'id': id, 'name': name, 'review': review});
 
-    print('$review $id $name');
 
     final response = await http.post(
       Uri.parse('$_baseUrl/review'),
       headers: {'Content-Type': 'application/json'},
       body: body,
     );
-    print(response.body);
-    print(response.statusCode);
     if (response.statusCode == 201) {
       return Right(
         CustomerReviewModel.fromJson(

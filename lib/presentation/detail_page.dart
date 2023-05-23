@@ -178,9 +178,9 @@ class DetailPage extends StatelessWidget {
 
   Widget _buildReviewColumn(BuildContext context) {
     return FormReviewWidget(
-        nameController: nameController,
-        reviewController: reviewController,
-        restaurant: restaurant,
+      nameController: nameController,
+      reviewController: reviewController,
+      restaurant: restaurant,
     );
   }
 
@@ -188,15 +188,15 @@ class DetailPage extends StatelessWidget {
     return Consumer<RestaurantReviewProvider>(
       builder: (context, state, _) {
         print(state.state);
-        if (state.state == ResultStateCustomer.Loading) {
+        if (state.state == ResultState.Loading) {
           return const Center(child: CircularProgressIndicator());
-        } else if (state.state == ResultStateCustomer.HasData) {
+        } else if (state.state == ResultState.HasData) {
           return _buildListCustomerReview(state.result.customerReviews);
-        } else if (state.state == ResultStateCustomer.NoData) {
+        } else if (state.state == ResultState.NoData) {
           return Text(state.message);
-        } else if (state.state == ResultStateCustomer.Error) {
+        } else if (state.state == ResultState.Error) {
           return Text(state.message);
-        } else if (state.state == null) {
+        } else if (state.state == ResultState.InitialState) {
           return _buildListCustomerReview(list);
         } else {
           return Text(state.message);

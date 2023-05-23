@@ -3,9 +3,6 @@ import 'package:foodie_hub/data/api/api_service.dart';
 import 'package:foodie_hub/data/models/restaurant_detail_model.dart';
 import 'package:foodie_hub/data/models/restaurant_model.dart';
 import 'package:foodie_hub/provider/restaurant_provider.dart';
-import 'package:provider/provider.dart';
-
-import '../data/models/customer_review.dart';
 
 
 class RestaurantDetailProvider extends ChangeNotifier {
@@ -19,7 +16,7 @@ class RestaurantDetailProvider extends ChangeNotifier {
 
   late RestaurantDetail _restaurantDetail;
 
-  late ResultState _state;
+  late ResultState _state = ResultState.InitialState;
   String _message = '';
 
   String get message => _message;
@@ -52,31 +49,4 @@ class RestaurantDetailProvider extends ChangeNotifier {
       return _message = 'Error --> $e';
     }
   }
-
-// Future<dynamic> postReviewRestaurant(
-//   String id,
-//   String name,
-//   String review,
-// ) async {
-//   try {
-//     _state = ResultState.Loading;
-//     notifyListeners();
-//     final restaurantPostReview =
-//         await apiService.postReviewRestaurant(id, name, review);
-//     print(restaurantPostReview.toString());
-//     restaurantPostReview.fold((error) {
-//       _state = ResultState.NoData;
-//       notifyListeners();
-//       return _message = 'Gagal Post Review';
-//     }, (data) {
-//       _state = ResultState.HasData;
-//       notifyListeners();
-//       return _restaurantCustomerReview = data;
-//     });
-//   } catch (e) {
-//     _state = ResultState.Error;
-//     notifyListeners();
-//     return _message = 'Error --> $e';
-//   }
-// }
 }
