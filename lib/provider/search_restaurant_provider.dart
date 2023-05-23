@@ -11,14 +11,19 @@ class SearchRestaurantProvider extends ChangeNotifier {
   SearchRestaurantProvider({required this.apiService});
 
   late RestaurantSearch _searchResult;
-  late ResultState _state;
+  ResultState _state = ResultState.InitialState;
   String _message = '';
 
   String get message => _message;
   RestaurantSearch get result => _searchResult;
   ResultState get state => _state;
 
-  Future performSearch(query) async {
+  Future performSearch(String query) async {
+    if (query.isEmpty) {
+      _state = ResultState.NoData;
+      notifyListeners();
+      return _message = 'Search Something';
+    }
     try {
       _state = ResultState.Loading;
       notifyListeners();
@@ -26,7 +31,7 @@ class SearchRestaurantProvider extends ChangeNotifier {
       if (restaurant.restaurants.isEmpty) {
         _state = ResultState.NoData;
         notifyListeners();
-        return _message = 'Empty Data';
+        return _message = 'Theres No Restaurant You Searched For';
       } else {
         _state = ResultState.HasData;
         notifyListeners();

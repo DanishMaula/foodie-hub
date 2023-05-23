@@ -14,13 +14,6 @@ class CardSearchRestaurant extends StatelessWidget {
     return Column(
       children: [
         GestureDetector(
-          // onTap: () {
-          //   Navigator.pushNamed(
-          //     context,
-          //     '/detail-page',
-          //     arguments: restaurant
-          //   );
-          // },
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -38,16 +31,14 @@ class CardSearchRestaurant extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Hero(
-                      tag: restaurant.pictureId,
-                      child: FadeInImage(
-                        image: NetworkImage(
-                            ApiService.imgUrl + restaurant.pictureId),
-                        placeholder: const AssetImage('assets/images/grey.png'),
-                        height: 150,
-                        width: 145,
-                        fit: BoxFit.cover,
-                      )),
+                  child: FadeInImage(
+                    image:
+                        NetworkImage(ApiService.imgUrl + restaurant.pictureId),
+                    placeholder: const AssetImage('assets/images/grey.png'),
+                    height: 150,
+                    width: 145,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               Expanded(

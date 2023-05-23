@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class SearchWidget extends StatelessWidget {
-  const SearchWidget({
-    super.key,
-    required TextEditingController searchController,
-    this.onChanged,
-  }) : _searchController = searchController;
-
-  final TextEditingController _searchController;
+class SearchWidget extends StatefulWidget {
   final void Function(String)? onChanged;
 
+  const SearchWidget({super.key, this.onChanged});
+
+  @override
+  State<SearchWidget> createState() => _SearchWidgetState();
+}
+
+class _SearchWidgetState extends State<SearchWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -42,7 +42,6 @@ class SearchWidget extends StatelessWidget {
                 ),
                 Expanded(
                   child: TextFormField(
-                    textInputAction: TextInputAction.search,
                     decoration: InputDecoration.collapsed(
                       filled: true,
                       fillColor: Colors.transparent,
@@ -52,8 +51,7 @@ class SearchWidget extends StatelessWidget {
                       ),
                       hoverColor: Colors.transparent,
                     ),
-                    controller: _searchController,
-                    onChanged: onChanged,
+                    onChanged: widget.onChanged,
                   ),
                 ),
               ],
