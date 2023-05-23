@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:foodie_hub/data/api/api_service.dart';
 import 'package:foodie_hub/data/models/restaurant_model.dart';
 import 'package:foodie_hub/provider/restaurant_detail_provider.dart';
+import 'package:foodie_hub/widgets/card_customer_review.dart';
+import 'package:foodie_hub/widgets/card_menu.dart';
+import 'package:foodie_hub/widgets/form_review_widget.dart';
+import 'package:foodie_hub/widgets/sliver_appbar_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../data/models/restaurant_detail_model.dart';
@@ -21,14 +25,10 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final detailProvider =
-    //     Provider.of<RestaurantDetailProvider>(context, listen: false);
-    final reviewProvider = Provider.of<RestaurantReviewProvider>(context, listen: false);
+    final reviewProvider =
+        Provider.of<RestaurantReviewProvider>(context, listen: false);
 
-    //
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      // detailProvider.fetchDetailRestaurant(id.toString());
-      // reviewProvider.postReviewRestaurant('','','');
       reviewProvider.resetState();
     });
 
@@ -176,42 +176,10 @@ class DetailPage extends StatelessWidget {
   }
 
   Widget _buildReviewColumn(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Write a Review',
-          style: getBlackTextStyle(),
-        ),
-        const SizedBox(height: 10),
-        TextField(
-          controller: nameController,
-          maxLines: 1,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'Enter your Name',
-          ),
-        ),
-        const SizedBox(height: 10),
-        TextField(
-          controller: reviewController,
-          maxLines: 3,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'Enter your review',
-          ),
-        ),
-        const SizedBox(height: 10),
-        Consumer<RestaurantReviewProvider>(builder: (context, state, _) {
-          return ElevatedButton(
-            onPressed: () {
-              state.postReviewRestaurant(
-                  restaurant.id, nameController.text, reviewController.text);
-            },
-            child: const Text('Submit'),
-          );
-        }),
-      ],
+    return FormReviewWidget(
+        nameController: nameController,
+        reviewController: reviewController,
+        restaurant: restaurant,
     );
   }
 
@@ -243,21 +211,7 @@ class DetailPage extends StatelessWidget {
       itemCount: list.length,
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0),
-          child: ListTile(
-            contentPadding: const EdgeInsets.all(10),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(8.0),
-              ),
-            ),
-            tileColor: Colors.grey.withOpacity(0.2),
-            title: Text(list[index].name),
-            trailing: Text(list[index].date),
-            subtitle: Text(list[index].review),
-          ),
-        );
+        return CardCustomerReview(customerReview: list[index]);
       },
     );
   }
@@ -271,77 +225,13 @@ class DetailPage extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5.0),
-              color: Colors.grey.withOpacity(0.2),
-            ),
-            margin: const EdgeInsets.only(right: 10),
-            height: 20,
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Center(
-              child: Text(
-                list[index].name,
-                style: getBlackTextStyle(
-                    fontSize: 18, fontWeight: FontWeight.w500),
-              ),
-            ),
-          );
+          return CardMenu(menu: list[index]);
         },
       ),
     );
   }
 
-  SliverAppBar _buildSliverAppBar(BuildContext context, Restaurant restaurant) {
-    return SliverAppBar(
-      pinned: true,
-      expandedHeight: 230,
-      backgroundColor: Colors.black,
-      leading: Padding(
-        padding: const EdgeInsets.only(left: 8.0),
-        child: CircleAvatar(
-          radius: 2,
-          backgroundColor: Colors.black.withOpacity(0.3),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      ),
-      flexibleSpace: FlexibleSpaceBar(
-        background: Container(
-          foregroundDecoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.black,
-                Colors.transparent,
-                Colors.transparent,
-                Colors.black
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0, 0, 0, 1],
-            ),
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          child: Hero(
-            tag: restaurant.pictureId,
-            child: Image.network(
-              '${ApiService.imgUrl}${restaurant.pictureId}',
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        title: Text(
-          restaurant.name,
-          style: getWhiteTextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-        ),
-        // titlePadding: const EdgeInsets.only(top: 16, left: 20),
-      ),
-    );
+  Widget _buildSliverAppBar(BuildContext context, Restaurant restaurant) {
+    return SliverAppBarWidget(restaurant: restaurant);
   }
 }
