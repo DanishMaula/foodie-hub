@@ -1,9 +1,12 @@
 import 'dart:convert';
 
-import 'package:foodie_hub/data/models/restaurant_search.dart';
+import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/customer_review.dart';
+import '../models/restaurant_detail_model.dart';
 import '../models/restaurant_model.dart';
+import '../models/restaurant_search.dart';
 
 class ApiService {
   late final String query;
@@ -12,26 +15,54 @@ class ApiService {
   static const String _searchRestaurant = '/search?q=';
   static const String _listRestaurant = '/list';
 
-
-  Future<Restaurants> getRestaurant() async {
-    final response = await http.get(Uri.parse(_baseUrl + _listRestaurant));
+  Future<RestaurantModel> getRestaurant() async {
+    final response = await http.get(Uri.parse("$_baseUrl/list"));
     if (response.statusCode == 200) {
-      return Restaurants.fromJson(jsonDecode(response.body));
+      return RestaurantModel.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to load restaurant');
     }
   }
 
-  Future<RestaurantElement> getRestaurantById(String id) async {
+  Future<Either<String, RestaurantDetail>> getRestaurantById(String id) async {
     final response = await http.get(Uri.parse('$_baseUrl/detail/$id'));
     if (response.statusCode == 200) {
-      return RestaurantElement.fromJson(jsonDecode(response.body)['restaurant']);
+      return Right(RestaurantDetail.fromJson(jsonDecode(response.body)));
     } else {
-      throw Exception('Failed to load restaurant');
+      return left('Failed to load restaurant');
     }
   }
 
-  Future<RestaurantSearch> searchRestaurant(String query) async {
+  Future<Either<String, CustomerReviewModel>> postReviewRestaurant(
+    String id,
+    String name,
+    String review,
+  ) async {
+    final body = json.encode({'id': id, 'name': name, 'review': review});
+
+    print('$review $id $name');
+
+    final response = await http.post(
+      Uri.parse('$_baseUrl/review'),
+      headers: {'Content-Type': 'application/json'},
+      body: body,
+    );
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode == 201) {
+      return Right(
+        CustomerReviewModel.fromJson(
+          jsonDecode(
+            response.body,
+          ),
+        ),
+      );
+    } else {
+      return left('Failed to load restaurant');
+    }
+  }
+
+ Future<RestaurantSearch> searchRestaurant(String query) async {
     final response = await http.get(Uri.parse('${_baseUrl + _searchRestaurant}$query'));
     if (response.statusCode == 200) {
       return RestaurantSearch.fromJson(jsonDecode(response.body));
@@ -39,4 +70,5 @@ class ApiService {
       throw Exception('Failed to load restaurant');
     }
   }
+
 }

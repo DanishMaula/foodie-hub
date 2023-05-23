@@ -1,184 +1,238 @@
-// import 'package:flutter/material.dart';
-// import 'package:foodie_hub/data/models/restaurant_model.dart';
+import 'package:flutter/material.dart';
+import 'package:foodie_hub/data/api/api_service.dart';
+import 'package:foodie_hub/data/models/restaurant_model.dart';
+import 'package:foodie_hub/provider/restaurant_detail_provider.dart';
+import 'package:foodie_hub/widgets/card_customer_review.dart';
+import 'package:foodie_hub/widgets/card_menu.dart';
+import 'package:foodie_hub/widgets/form_review_widget.dart';
+import 'package:foodie_hub/widgets/sliver_appbar_widget.dart';
+import 'package:provider/provider.dart';
 
-// import '../utils/style_manager.dart';
+import '../data/models/restaurant_detail_model.dart';
+import '../provider/restaurant_provider.dart';
+import '../provider/restaurant_review_provider.dart';
+import '../utils/style_manager.dart';
 
-// class DetailPage extends StatelessWidget {
-//   static const routeName = '/detail-page';
+class DetailPage extends StatelessWidget {
+  static const routeName = '/detail-page';
 
-//   final RestaurantElement restaurantModel;
+  final RestaurantElement restaurant;
 
-//   const DetailPage({super.key, required this.restaurantModel});
+  DetailPage({super.key, required this.restaurant});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         body: NestedScrollView(
-//       headerSliverBuilder: (context, isScrolled) {
-//         return [
-//           _buildSliverAppBar(context),
-//         ];
-//       },
-//       body: SingleChildScrollView(
-//         child: Padding(
-//           padding: const EdgeInsets.all(16.0),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Row(
-//                 children: [
-//                   const Icon(
-//                     Icons.location_on,
-//                     color: Colors.redAccent,
-//                   ),
-//                   Text(
-//                     restaurantModel.city,
-//                     style: getBlackTextStyle(),
-//                   ),
-//                 ],
-//               ),
-//               const SizedBox(
-//                 height: 10,
-//               ),
-//               Row(
-//                 children: [
-//                   const Icon(
-//                     Icons.star,
-//                     color: Colors.amber,
-//                   ),
-//                   Text(
-//                     restaurantModel.rating.toString(),
-//                     style: getBlackTextStyle(),
-//                   ),
-//                 ],
-//               ),
-//               const SizedBox(
-//                 height: 10,
-//               ),
-//               Text(
-//                 'Description',
-//                 style: getBlackTextStyle(
-//                     fontWeight: FontWeight.w600, fontSize: 22),
-//               ),
-//               Text(
-//                 restaurantModel.description,
-//                 style: getBlackTextStyle(),
-//               ),
-//               const SizedBox(
-//                 height: 10,
-//               ),
-//               Text(
-//                 'Menu',
-//                 style: getBlackTextStyle(
-//                     fontWeight: FontWeight.w600, fontSize: 22),
-//               ),
-//               Text(
-//                 'Foods',
-//                 style: getBlackTextStyle(),
-//               ),
-//               const SizedBox(
-//                 height: 10,
-//               ),
-//               _menuList(restaurantModel.menus.foods),
-//               const SizedBox(
-//                 height: 10,
-//               ),
-//               Text(
-//                 'Drinks',
-//                 style: getBlackTextStyle(),
-//               ),
-//               const SizedBox(
-//                 height: 10,
-//               ),
-//               _menuList(restaurantModel.menus.drinks),
-//             ],
-//           ),
-//         ),
-//       ),
-//     ));
-//   }
+  TextEditingController reviewController = TextEditingController();
 
-//   SliverAppBar _buildSliverAppBar(BuildContext context) {
-//     return SliverAppBar(
-//       pinned: true,
-//       // floating: true,
-//       expandedHeight: 230,
-//       backgroundColor: Colors.black,
-//       leading: Padding(
-//         padding: const EdgeInsets.only(left: 8.0),
-//         child: CircleAvatar(
-//           radius: 2,
-//           backgroundColor: Colors.black.withOpacity(0.3),
-//           child: IconButton(
-//             icon: const Icon(Icons.arrow_back),
-//             onPressed: () {
-//               Navigator.pop(context);
-//             },
-//           ),
-//         ),
-//       ),
-//       flexibleSpace: FlexibleSpaceBar(
-//         background: Container(
-//           foregroundDecoration: const BoxDecoration(
-//             gradient: LinearGradient(
-//               colors: [
-//                 Colors.black,
-//                 Colors.transparent,
-//                 Colors.transparent,
-//                 Colors.black
-//               ],
-//               begin: Alignment.topCenter,
-//               end: Alignment.bottomCenter,
-//               stops: [0, 0, 0, 1],
-//             ),
-//           ),
-//           decoration: BoxDecoration(
-//             borderRadius: BorderRadius.circular(20.0),
-//           ),
-//           child: Hero(
-//             tag: restaurantModel.pictureId,
-//             child: Image.network(
-//               restaurantModel.pictureId,
-//               fit: BoxFit.cover,
-//             ),
-//           ),
-//         ),
-//         title: Text(
-//           restaurantModel.name,
-//           style: getWhiteTextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-//         ),
-//         // titlePadding: const EdgeInsets.only(top: 16, left: 20),
-//       ),
-//     );
-//   }
+  TextEditingController nameController = TextEditingController();
 
-//   SizedBox _menuList(List<Drink> menu) {
-//     return SizedBox(
-//       height: 40,
-//       child: ListView.builder(
-//         shrinkWrap: true,
-//         itemCount: menu.length,
-//         scrollDirection: Axis.horizontal,
-//         physics: const BouncingScrollPhysics(),
-//         itemBuilder: (context, index) {
-//           return Container(
-//             decoration: BoxDecoration(
-//               borderRadius: BorderRadius.circular(5.0),
-//               color: Colors.grey.withOpacity(0.2),
-//             ),
-//             margin: const EdgeInsets.only(right: 10),
-//             height: 20,
-//             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-//             child: Center(
-//               child: Text(
-//                 menu[index].name,
-//                 style: getBlackTextStyle(
-//                     fontSize: 18, fontWeight: FontWeight.w600),
-//               ),
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    final reviewProvider =
+        Provider.of<RestaurantReviewProvider>(context, listen: false);
+
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      reviewProvider.resetState();
+    });
+
+    return ChangeNotifierProvider(
+      create: (context) => RestaurantDetailProvider(
+          apiService: ApiService(), restaurant: restaurant),
+      child: Consumer<RestaurantDetailProvider>(
+        builder: (context, state, _) {
+          if (state.state == ResultState.Loading) {
+            return _buildScaffoldCenter(
+                context, const CircularProgressIndicator());
+          } else if (state.state == ResultState.HasData) {
+            return _buildScaffold(context, state.result.restaurant);
+          } else if (state.state == ResultState.NoData) {
+            return _buildScaffoldCenter(context, Text(state.message));
+          } else if (state.state == ResultState.Error) {
+            return _buildScaffoldCenter(context, Text(state.message));
+          } else {
+            return _buildScaffoldCenter(context, Text(state.message));
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildScaffoldCenter(BuildContext context, Widget? child) {
+    return Scaffold(
+      body: Center(
+        child: child,
+      ),
+    );
+  }
+
+  Widget _buildScaffold(BuildContext context, Restaurant restaurant) {
+    return Scaffold(
+      body: NestedScrollView(
+        headerSliverBuilder: (context, isScrolled) {
+          return [
+            _buildSliverAppBar(context, restaurant),
+          ];
+        },
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.location_on,
+                      color: Colors.redAccent,
+                    ),
+                    Text(
+                      restaurant.city,
+                      style: getBlackTextStyle(),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    Text(
+                      restaurant.rating.toString(),
+                      style: getBlackTextStyle(),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'Categories : ',
+                  style: getBlackTextStyle(
+                      fontWeight: FontWeight.w600, fontSize: 22),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                _buildList(restaurant.categories),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'Description',
+                  style: getBlackTextStyle(
+                      fontWeight: FontWeight.w600, fontSize: 22),
+                ),
+                Text(
+                  restaurant.description,
+                  style: getBlackTextStyle(),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'Menu',
+                  style: getBlackTextStyle(
+                      fontWeight: FontWeight.w600, fontSize: 22),
+                ),
+                Text(
+                  'Foods :',
+                  style: getBlackTextStyle(),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                _buildList(restaurant.menus.foods),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'Drinks : ',
+                  style: getBlackTextStyle(),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                _buildList(restaurant.menus.drinks),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'Review',
+                  style: getBlackTextStyle(
+                      fontWeight: FontWeight.w600, fontSize: 22),
+                ),
+                _buildReviewColumn(context),
+                const SizedBox(
+                  height: 10,
+                ),
+                _buildCustomerReview(restaurant.customerReviews),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildReviewColumn(BuildContext context) {
+    return FormReviewWidget(
+        nameController: nameController,
+        reviewController: reviewController,
+        restaurant: restaurant,
+    );
+  }
+
+  Consumer _buildCustomerReview(List<CustomerReview> list) {
+    return Consumer<RestaurantReviewProvider>(
+      builder: (context, state, _) {
+        print(state.state);
+        if (state.state == ResultStateCustomer.Loading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state.state == ResultStateCustomer.HasData) {
+          return _buildListCustomerReview(state.result.customerReviews);
+        } else if (state.state == ResultStateCustomer.NoData) {
+          return Text(state.message);
+        } else if (state.state == ResultStateCustomer.Error) {
+          return Text(state.message);
+        } else if (state.state == null) {
+          return _buildListCustomerReview(list);
+        } else {
+          return Text(state.message);
+        }
+      },
+    );
+  }
+
+  Widget _buildListCustomerReview(List<CustomerReview> list) {
+    return ListView.builder(
+      shrinkWrap: true,
+      padding: EdgeInsets.zero,
+      itemCount: list.length,
+      physics: const BouncingScrollPhysics(),
+      itemBuilder: (context, index) {
+        return CardCustomerReview(customerReview: list[index]);
+      },
+    );
+  }
+
+  SizedBox _buildList(List<dynamic> list) {
+    return SizedBox(
+      height: 40,
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: list.length,
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        itemBuilder: (context, index) {
+          return CardMenu(menu: list[index]);
+        },
+      ),
+    );
+  }
+
+  Widget _buildSliverAppBar(BuildContext context, Restaurant restaurant) {
+    return SliverAppBarWidget(restaurant: restaurant);
+  }
+}

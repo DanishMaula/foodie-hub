@@ -77,23 +77,27 @@ class _HomePageState extends State<HomePage> {
             itemCount: state.result.restaurants.length,
             itemBuilder: (context, index) {
               var restaurant = state.result.restaurants[index];
-              return CardRestaurant(restaurant: restaurant);
-            });
-      } else if (state.state == ResultState.NoData) {
-        return Center(
-          child: Material(
-            child: Text(state.message),
-          ),
-        );
-      } else if (state.state == ResultState.Error) {
-        return Center(
-          child: Material(
-            child: Text(state.message),
-          ),
-        );
-      } else {
-        return const Center(child: Text(''));
-      }
-    });
+              return CardRestaurant(
+                restaurant: restaurant,
+              );
+            },
+          );
+        } else if (state.state == ResultState.NoData) {
+          return Center(
+            child: Material(
+              child: Text(state.message),
+            ),
+          );
+        } else if (state.state == ResultState.Error) {
+          return Center(
+            child: Material(
+              child: Text(state.message),
+            ),
+          );
+        } else {
+          return const Center(child: Text(''));
+        }
+      },
+    );
   }
 }
